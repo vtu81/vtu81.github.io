@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="配置nginx 运行code-server 问题一 问题二     code-server是一款基于服务器端的类VScode编辑器，制作精良。为了最大化利用白嫖的服务器，我尝试配置code-server。使用code-server的具体的安装过程网上比比皆是，不赘述。我选择的是在docker中（可选）运行code-server。 毫无疑问，又遇到了问题：我可以在本地通过localhost:80">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Code-Server配置">
+<meta property="og:url" content="http://yoursite.com/2020/05/25/Code-Server-Config/index.html">
+<meta property="og:site_name" content="VTU :)">
+<meta property="og:description" content="配置nginx 运行code-server 问题一 问题二     code-server是一款基于服务器端的类VScode编辑器，制作精良。为了最大化利用白嫖的服务器，我尝试配置code-server。使用code-server的具体的安装过程网上比比皆是，不赘述。我选择的是在docker中（可选）运行code-server。 毫无疑问，又遇到了问题：我可以在本地通过localhost:80">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/05/25/Code-Server-Config/code-server-final.png">
+<meta property="og:image" content="http://yoursite.com/2020/05/25/Code-Server-Config/terminal_issue.png">
+<meta property="article:published_time" content="2020-05-25T06:41:29.000Z">
+<meta property="article:modified_time" content="2020-05-25T10:12:42.999Z">
+<meta property="article:author" content="VTU">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/05/25/Code-Server-Config/code-server-final.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/05/25/Code-Server-Config/"/>
+
+
+
+
+
+  <title>Code-Server配置 | VTU :)</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">VTU :)</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/25/Code-Server-Config/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="VTU">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/vtu_cat.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="VTU :)">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Code-Server配置</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-25T14:41:29+08:00">
+                2020-05-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <!-- toc -->
+<ul>
+<li><a href="#配置nginx">配置nginx</a></li>
+<li><a href="#运行code-server">运行code-server</a><ul>
+<li><a href="#问题一">问题一</a></li>
+<li><a href="#问题二">问题二</a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+<p><a href="https://github.com/cdr/code-server" target="_blank" rel="noopener">code-server</a>是一款基于服务器端的类VScode编辑器，制作精良。为了最大化利用白嫖的服务器，我尝试配置code-server。使用code-server的具体的安装过程网上比比皆是，不赘述。我选择的是<a href="https://www.freesion.com/article/5288646497/" target="_blank" rel="noopener">在docker中（可选）运行code-server</a>。</p>
+<p><strong>毫无疑问，又遇到了问题</strong>：我可以在本地通过<code>localhost:8080</code>或<code>0.0.0.0:8080</code>访问code-server，却无法在其他设备通过<code>服务器IP地址:8080</code>的http地址访问。</p>
+<p>查阅了相关资料，我决定同时安装了nginx进行端口转发，最终可以成功地通过<code>服务器IP地址</code>使用code-server。总的来说，主要需要安装</p>
+<ul>
+<li><strong>nginx</strong></li>
+<li><strong>docker</strong></li>
+<li><strong>code-server-3.3.1</strong></li>
+</ul>
+<h1><span id="配置nginx">配置nginx</span></h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/nginx/nginx.conf</span><br></pre></td></tr></table></figure>
+<p>修改配置文件如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">#&#x2F;etc&#x2F;nginx&#x2F;nginx.conf</span><br><span class="line">user  nginx;</span><br><span class="line">worker_processes  1;</span><br><span class="line"></span><br><span class="line">error_log  &#x2F;var&#x2F;log&#x2F;nginx&#x2F;error.log warn;</span><br><span class="line">pid        &#x2F;var&#x2F;run&#x2F;nginx.pid;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections  1024;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    include       &#x2F;etc&#x2F;nginx&#x2F;mime.types;</span><br><span class="line">    default_type  application&#x2F;octet-stream;</span><br><span class="line"></span><br><span class="line">    log_format  main  &#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;</span><br><span class="line">                      &#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;</span><br><span class="line">                      &#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;;</span><br><span class="line"></span><br><span class="line">    access_log  &#x2F;var&#x2F;log&#x2F;nginx&#x2F;access.log  main;</span><br><span class="line"></span><br><span class="line">    sendfile        on;</span><br><span class="line">    #tcp_nopush     on;</span><br><span class="line"></span><br><span class="line">    keepalive_timeout  65;</span><br><span class="line"></span><br><span class="line">    #gzip  on;</span><br><span class="line"></span><br><span class="line">    include &#x2F;etc&#x2F;nginx&#x2F;conf.d&#x2F;*.conf;</span><br><span class="line"></span><br><span class="line">    #ssl on</span><br><span class="line">    #ssl_certificate     &#x2F;path&#x2F;to&#x2F;crt&#x2F;chain.crt</span><br><span class="line">    #ssl_certificate_key &#x2F;path&#x2F;to&#x2F;key&#x2F;key.key</span><br><span class="line">    </span><br><span class="line">  server &#123;</span><br><span class="line">    listen 80; #这个是客户端访问反代服务器时的端口</span><br><span class="line">    server_name 39.108.96.83;</span><br><span class="line">    location &#x2F; &#123;</span><br><span class="line">      proxy_pass http:&#x2F;&#x2F;0.0.0.0:8080&#x2F;;</span><br><span class="line">      proxy_read_timeout 200;</span><br><span class="line">      index index.html index.htm;</span><br><span class="line">      proxy_http_version 1.1;</span><br><span class="line">      proxy_set_header Upgrade $http_upgrade;</span><br><span class="line">      proxy_set_header Connection upgrade;</span><br><span class="line">      proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>更新nginx：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">nginx -s reload</span><br><span class="line"><span class="comment"># or</span></span><br><span class="line">nginx -s reopen</span><br><span class="line"><span class="comment">#or</span></span><br><span class="line">nginx -s stop</span><br><span class="line">nginx</span><br></pre></td></tr></table></figure>
+<p>查看nginx运行情况：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef | grep nginx</span><br></pre></td></tr></table></figure>
+<h1><span id="运行code-server">运行code-server</span></h1><p>最后通过命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -p 127.0.0.1:8080:8080   -e PA -e PASSWORD=XXXXXX -v <span class="string">"<span class="variable">$PWD</span>:/home/coder/project"</span>   -u <span class="string">"<span class="variable">$(id -u)</span>:<span class="variable">$(id -g)</span>"</span>   codercom/code-server:latest</span><br></pre></td></tr></table></figure>
+<p>在docker中运行code-server。此时，可以直接在浏览器输入服务器域名/IP地址看到code-server登录页面了！输入刚刚设定的<code>PASSWORD</code>，就能看到熟悉的界面：</p>
+<p><img src="code-server-final.png" alt="image-20200525145020752"></p>
+<p>但仍然有两个问题：</p>
+<h2><span id="问题一">问题一</span></h2><p>docker中的终端还未配置好，也就是说像<strong>gcc</strong>、<strong>g++</strong>等命令还没有办法使用。</p>
+<p style="text-align:center;font-size:30px">To be continued.</p>
+
+<h2><span id="问题二">问题二</span></h2><p>如果不在docker中运行code-server，terminal处会一直显示<code>Starting...</code>，无法使用命令行！</p>
+<p><img src="terminal_issue.png"></p>
+<p style="color:red;font-size:20px">解决办法</p>
+
+<p>  从code-server的Github issue以及本身的报错”Error: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.20’ not found”猜测该问题是由于libstdc++.so.6的链接版本比较古老而导致的。</p>
+<p>  在<code>~</code>目录下执行</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -name libstdc++.so.6.0.*</span><br></pre></td></tr></table></figure>
+<p>  查看当前的所有libstdc++.so.6版本，结果如下：</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/var/lib/docker/overlay2/235493dcc7228d3925c82a6813027e38dca74e0968910dfa7489d8dc450459bb/diff/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25</span><br><span class="line">/var/lib/docker/overlay2/235493dcc7228d3925c82a6813027e38dca74e0968910dfa7489d8dc450459bb/diff/usr/share/gdb/auto-load/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25-gdb.py</span><br><span class="line">/usr/lib64/libstdc++.so.6.0.19</span><br><span class="line">/usr/lib/libstdc++.so.6.0.19</span><br><span class="line">/usr/share/gdb/auto-load/usr/lib64/libstdc++.so.6.0.19-gdb.pyo</span><br><span class="line">/usr/share/gdb/auto-load/usr/lib64/libstdc++.so.6.0.19-gdb.pyc</span><br><span class="line">/usr/share/gdb/auto-load/usr/lib64/libstdc++.so.6.0.19-gdb.py</span><br><span class="line">/usr/share/gdb/auto-load/usr/lib/libstdc++.so.6.0.19-gdb.pyo</span><br><span class="line">/usr/share/gdb/auto-load/usr/lib/libstdc++.so.6.0.19-gdb.pyc</span><br><span class="line">/usr/share/gdb/auto-load/usr/lib/libstdc++.so.6.0.19-gdb.py</span><br></pre></td></tr></table></figure>
+<p>  尝试把第一项6.0.25版本复制到<code>/usr/lib64</code>下进行链接，但可能是因为在docker中的版本不兼容，后续运行<code>./code-server</code>出现了问题。网络上找到了<a href="http://www.vuln.cn/wp-content/uploads/2019/08/libstdc.so_.6.0.26.zip" target="_blank" rel="noopener">libstdc++.so.6.0.26</a>资源，直接下载传输到服务器上，复制到<code>/usr/lib64</code>下进行链接：</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cp libstdc++.so.6.0.26 /usr/lib64/</span><br><span class="line"><span class="built_in">cd</span> /usr/lib64</span><br><span class="line">rm ./libstdc++.so.6</span><br><span class="line">ln -s libstdc++.so.6.0.26 libstdc++.so.6 <span class="comment">#链接</span></span><br><span class="line">ls -l libstdc++.so* <span class="comment">#查看得到下列结果，连接成功！</span></span><br><span class="line"><span class="comment"># lrwxrwxrwx  1 root root       19 May 25 17:45 libstdc++.so.6 -&gt; libstdc++.so.6.0.26</span></span><br><span class="line"><span class="comment"># -rwxr-xr-x. 1 root root   991616 Aug  7  2019 libstdc++.so.6.0.19</span></span><br><span class="line"><span class="comment"># -rw-r--r--  1 root root  1570256 May 25 17:17 libstdc++.so.6.0.25</span></span><br><span class="line"><span class="comment"># -rwxr-xr-x  1 root root 13172960 May 25 17:45 libstdc++.so.6.0.26</span></span><br></pre></td></tr></table></figure>
+<p>  此时再次运行.<code>/code-server</code>，terminal可以正常加载出来了！(图略，自己想象)</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/24/Intranet-penetration/" rel="next" title="内网穿透">
+                <i class="fa fa-chevron-left"></i> 内网穿透
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/05/28/SGX-Learning1/" rel="prev" title="SGX学习1">
+                SGX学习1 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/vtu_cat.jpg"
+               alt="VTU" />
+          <p class="site-author-name" itemprop="name">VTU</p>
+           
+              <p class="site-description motion-element" itemprop="description">VTU's Personal Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text">配置nginx</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-number">2.</span> <span class="nav-text">运行code-server</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">2.1.</span> <span class="nav-text">问题一</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">2.2.</span> <span class="nav-text">问题二</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">VTU</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

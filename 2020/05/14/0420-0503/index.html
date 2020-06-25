@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="RSA算法 产生公私钥对 RSA加密 — 使用公钥 RSA解密 — 使用私钥 RSA数字签名&amp;验证 签名 验证   RSA公开密钥密码体制 — 非对称密码 Example   One-time Password (OTP) Overview Design Goals Secure One-time Password Architecture Installing the OTP plu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0420-0503 笔记">
+<meta property="og:url" content="http://yoursite.com/2020/05/14/0420-0503/index.html">
+<meta property="og:site_name" content="VTU :)">
+<meta property="og:description" content="RSA算法 产生公私钥对 RSA加密 — 使用公钥 RSA解密 — 使用私钥 RSA数字签名&amp;验证 签名 验证   RSA公开密钥密码体制 — 非对称密码 Example   One-time Password (OTP) Overview Design Goals Secure One-time Password Architecture Installing the OTP plu">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/05/14/0420-0503/0420-0503_pic1.png">
+<meta property="og:image" content="http://yoursite.com/2020/05/14/0420-0503/0420-0503_pic2.png">
+<meta property="og:image" content="http://yoursite.com/2020/05/14/0420-0503/0420-0503_pic3.png">
+<meta property="article:published_time" content="2020-05-13T17:01:36.000Z">
+<meta property="article:modified_time" content="2020-06-08T10:49:05.923Z">
+<meta property="article:author" content="VTU">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/05/14/0420-0503/0420-0503_pic1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/05/14/0420-0503/"/>
+
+
+
+
+
+  <title>0420-0503 笔记 | VTU :)</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">VTU :)</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/14/0420-0503/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="VTU">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/vtu_cat.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="VTU :)">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">0420-0503 笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-14T01:01:36+08:00">
+                2020-05-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <!-- toc -->
+<ul>
+<li><a href="#rsa算法">RSA算法</a><ul>
+<li><a href="#产生公私钥对">产生公私钥对</a></li>
+<li><a href="#rsa加密-使用公钥">RSA加密 — 使用公钥</a></li>
+<li><a href="#rsa解密-使用私钥">RSA解密 — 使用私钥</a></li>
+<li><a href="#rsa数字签名验证">RSA数字签名&amp;验证</a><ul>
+<li><a href="#签名">签名</a></li>
+<li><a href="#验证">验证</a></li>
+</ul>
+</li>
+<li><a href="#rsa公开密钥密码体制-非对称密码">RSA公开密钥密码体制 — 非对称密码</a></li>
+<li><a href="#example">Example</a></li>
+</ul>
+</li>
+<li><a href="#one-time-password-otp">One-time Password (OTP)</a><ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#design-goals">Design Goals</a></li>
+<li><a href="#secure-one-time-password-architecture">Secure One-time Password Architecture</a><ul>
+<li><a href="#installing-the-otp-plugin-on-the-client-device-generating-a-shared-key">Installing the OTP plugin on the client device &amp; Generating a shared key</a></li>
+<li><a href="#use-otp-as-a-second-authentication-factor">Use OTP as a second authentication factor</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#enterprise-rights-management-erm">Enterprise Rights Management (ERM)</a><ul>
+<li><a href="#overview-1">Overview</a></li>
+<li><a href="#design-goals-1">Design Goals</a></li>
+<li><a href="#secure-erm-architecture">Secure ERM Architecture</a></li>
+</ul>
+</li>
+<li><a href="#secure-video-conferencing-svc">Secure Video Conferencing (SVC)</a><ul>
+<li><a href="#overview-2">Overview</a></li>
+<li><a href="#threat-model">Threat Model</a></li>
+<li><a href="#secure-video-conferencing-architecture">Secure Video Conferencing Architecture</a></li>
+</ul>
+</li>
+<li><a href="#future-work">Future Work</a><ul>
+<li><a href="#hardening-server-processing">Hardening Server Processing</a></li>
+<li><a href="#trusted-input">Trusted Input</a></li>
+<li><a href="#improved-tools">Improved Tools</a></li>
+</ul>
+</li>
+<li><a href="#related-work-and-summary">Related Work and Summary</a><ul>
+<li><a href="#managed-runtime-environment-mrte">Managed Runtime Environment (MRTE)</a></li>
+<li><a href="#tamper-resistant-software-trs">Tamper Resistant Software (TRS)</a></li>
+<li><a href="#flicker">Flicker</a></li>
+<li><a href="#overshadow">Overshadow</a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+<h2><span id="rsa算法">RSA算法</span></h2><h3><span id="产生公私钥对">产生公私钥对</span></h3><ol>
+<li><p>随机选择两个不相等的质数$p$、$q$</p>
+</li>
+<li><p>计算乘积$n=p\times q$：密钥的长度。实际中一般为1024或2048位</p>
+</li>
+<li><p>计算$n$的欧拉函数$\varphi(n)$</p>
+<script type="math/tex; mode=display">
+\varphi(n)=(p-1)(q-1)</script></li>
+<li><p>随机选择一个整数$e$：用来加密的数<br>需要满足$1&lt;e&lt;\varphi(n)$，且$e$与$\varphi(n)$<strong>互质</strong></p>
+</li>
+<li><p>计算$e$对于$\varphi(n)$的乘法逆元$d$：用来解密的数</p>
+<script type="math/tex; mode=display">
+e\cdot d\equiv 1\ mod\ \varphi(n)</script></li>
+<li><p>将$(n,e)$封装为公钥，$(n,d)$封装为私钥</p>
+</li>
+</ol>
+<h3><span id="rsa加密-使用公钥">RSA加密 — 使用公钥</span></h3><p>对明文进行比特串分组，使得每个分组$m$对应的十进制数小于$n$，再依次对每个分组$m$进行一次加密。所有分组的密文构成的序列就是原始消息的加密结果。对于每一个分组$m$的一次加密得到的密文$c$为：</p>
+<script type="math/tex; mode=display">
+c=m^e\ mod\ n</script><ul>
+<li>注意到$0\le m,c&lt;n$</li>
+</ul>
+<h3><span id="rsa解密-使用私钥">RSA解密 — 使用私钥</span></h3><p>对于密文$0\le m,c&lt;n$，解密算法：</p>
+<script type="math/tex; mode=display">
+m=c^d\ mod\ n</script><h3><span id="rsa数字签名amp验证">RSA数字签名&amp;验证</span></h3><p>在发送一个消息时，除了加密、解密之外还可以额外进行签名、验证以确保消息是由某一个人发送的。</p>
+<h4><span id="签名">签名</span></h4><p>对于一个消息$L$，令$m=md5(L)$，利用私钥中的$d$进行签名，得到$sign$为：</p>
+<script type="math/tex; mode=display">
+sign\equiv m^d\ mod\ n</script><h4><span id="验证">验证</span></h4><p>进行验证时，先计算</p>
+<script type="math/tex; mode=display">
+m_{calculate}\equiv sign^e\ mod\ n</script><p>将$m_{calculate}$与$m=md5(L)$进行对比，如果一致，则$sign$是$m$的有效签名</p>
+<h3><span id="rsa公开密钥密码体制-非对称密码">RSA公开密钥密码体制 — 非对称密码</span></h3><p>所谓的公开密钥密码体制就是使用不同的加密密钥与解密密钥，是一种“由已知加密密钥推导出解密密钥在计算上是不可行的”密码体制。</p>
+<p>在公开密钥密码体制中，加密密钥（即公开密钥）PK是公开信息，而解密密钥（即秘密密钥）SK是需要保密的。加密算法E和解密算法D也都是公开的。虽然解密密钥SK是由公开密钥PK决定的，但却不能根据PK计算出SK。</p>
+<h3><span id="example">Example</span></h3><p>公钥登录是为了解决每次登录服务器都要输入密码的问题，流行使用RSA加密方案，主要流程包含：</p>
+<ol>
+<li><p>客户端生成RSA公钥和私钥</p>
+</li>
+<li><p>客户端将自己的公钥存放到服务器</p>
+</li>
+<li><p>客户端请求连接服务器，服务器将一个<strong>随机字符串</strong>发送给客户端</p>
+</li>
+<li><p>客户端根据自己的私钥加密这个随机字符串之后再发送给服务器</p>
+</li>
+<li><p>服务器接受到加密后的字符串之后用公钥解密，如果正确就让客户端登录，否则拒绝。这样就不用使用密码了。</p>
+</li>
+</ol>
+<h2><span id="one-time-password-otp">One-time Password (OTP)</span></h2><h3><span id="overview">Overview</span></h3><ol>
+<li><p>在服务端、用户端（hardware token）之间生成共享的pre-shared key。</p>
+</li>
+<li><p>用户端（hardware token）periodically cryptographically: <strong>pre-shared key + time -&gt; code (OTP)</strong></p>
+</li>
+<li><p>用户端登陆时，不仅要输入username、password，还需要输入这个token上显示的code (OTP)。</p>
+</li>
+<li>服务端验证时，也根据pre-shared key、time生成code，与用户的输入进行比较以验证身份。</li>
+</ol>
+<blockquote>
+<p> 硬件令牌 hardware token：<a href="https://www.techug.com/post/what-principle.html" target="_blank" rel="noopener">https://www.techug.com/post/what-principle.html</a></p>
+</blockquote>
+<h3><span id="design-goals">Design Goals</span></h3><p>硬件令牌 hardware token 会产生额外的开支；因而考虑将OTP在软件层面进行实现。但常规的OTP软件实现可能比较脆弱，于是论文中给出了基于SGX的OTP实现方法。</p>
+<h3><span id="secure-one-time-password-architecture">Secure One-time Password Architecture</span></h3><ul>
+<li>OTP server 服务端</li>
+<li>OTP client 客户端：可以又多种实现方式，这里以 browser plugin 为例</li>
+</ul>
+<h4><span id="installing-the-otp-plugin-on-the-client-device-amp-generating-a-shared-key">Installing the OTP plugin on the client device &amp; Generating a shared key</span></h4><ol>
+<li>The user requests a new account at a financial institution (FI).<br> 用户向FI请求新账户</li>
+<li>The FI asks the user to install a new browser plugin.<br>FI要求用户安装新的浏览器插件</li>
+<li>The user chooses to install the plugin.<br>用户安装新的浏览器插件</li>
+<li>The plugin launches and instantiates the OTP enclave.<br>插件启动，实例化OTP enclave</li>
+<li>The plugin contacts the FI server and asks for a new preshared key.<br> 插件向FI请求新的preshared key</li>
+<li>The plugin authenticates the FI server using a protocol such as TLS.<br> 插件向FI服务器证明身份（利用如TLS的协议）</li>
+<li>The FI server ensures that it is communicating with a valid OTP enclave using mechanisms described in [2]. It can then establish a trusted channel that terminates in the enclave.<br> FI服务器确认后建立一个和用户enclave之间的可信通道</li>
+<li>To prove that a new account is being established for a valid user, the user can be provided an authentication code through an out-of-band channel such as a text message or<br>phone call.<br>通过带外通道（如电话、短信等）提供验证码给用户（以验证账户创建成功）</li>
+<li>The user is prompted for the authentication code, which heenters into the OTP plugin, which passes the code to the enclave, which in turn passes the authentication code over the trusted channel to the OTP server.<br> 用户输入验证码 -&gt; OTP plugin -&gt; enclave ——trusted channel—&gt; OTP server</li>
+<li>The OTP server has now verified that it is communicating with a correct version of the OTP enclave, and that an authorized user has requested a new account.<br>服务端进行验证（正确版本的OTP enclave &amp; 授权的用户）</li>
+<li>The OTP server can now generate a random OTP pre-shared key. It will store this key locally in a secure fashion, and associate the key with the user’s account.<br>服务器生成pre-shared key</li>
+<li>This pre-shared key can now be sent to the OTP enclave via the trusted channel that was established during the attestation process. The OTP server and the OTP enclave now possess the same pre-shared key.<br>pre-shared key通过可信通道传输给用户的OTP enclave</li>
+<li>The OTP enclave can now store the pre-shared key using the sealing process described in [2]. As described in this paper, the OTP pre-shared key can be encrypted and stored with a key that is only known to the OTP enclave executing on the same platform that initiated the OTP provisioning process.<br>OTP enclave存储pre-shared key并进行封装、加密——只能被这个enclave访问</li>
+<li>At this point both the OTP server and the OTP client enclave in the OTP plugin can securely access the same preshared OTP key.</li>
+</ol>
+<h4><span id="use-otp-as-a-second-authentication-factor">Use OTP as a second authentication factor</span></h4><ol>
+<li>A user begins the <strong>login</strong> process with her financial institution using her browser with the installed OTP plugin.</li>
+<li>The web page received by the browser contains <strong>an OTP element</strong> which signals the OTP plugin to become <strong>active</strong>.</li>
+<li>The OTP enclave and OTP server establish a <strong>secure channel</strong> as described in the provisioning step previously.</li>
+<li>The OTP server generates a <strong>random challenge value</strong> and sends this to the OTP enclave over the secure channel.</li>
+<li>The OTP enclave generates the <strong>OTP value</strong> by cryptographically <u>combining the challenge, the current time, and the pre-shard key</u> to produce the one-time password.</li>
+<li>As the user completes the login procedure, the browser plugin adds the computed one-time password to the set of data that is <strong>sent to the FI</strong>.</li>
+<li>The FI can now <strong>validate</strong> that the correct one-time password was used during the login process.</li>
+</ol>
+<p><img src="0420-0503_pic1.png" alt="image-20200430230924619" style="zoom: 67%;"></p>
+<h2><span id="enterprise-rights-management-erm">Enterprise Rights Management (ERM)</span></h2><h3><span id="overview">Overview</span></h3><p><strong>Enterprise Rights Management (ERM)</strong> is a technology that aims to secure crucial elements of access and distribution of sensitive documents, such as confidentiality, access control, usage policies, and logging of user activities.</p>
+<ul>
+<li>Enterprise data - 通常的ERM针对于企业数据的保护</li>
+<li>Personal data - 保护需求日趋增加</li>
+</ul>
+<p>ERM protected applications typically run on off-the-shelf client platforms and operating systems. Malware could compromise the ability of an ERM application. 从而导致 transparent loss of digital assets (如极光行动 operation Aurora). <strong>Current solutions, which attempt to protect ERM assets using encryption and access control mechanisms, are vulnerable to several attacks</strong>:</p>
+<ul>
+<li>steal document content and/or encryption keys from application memory where it is processed</li>
+<li>copy display content from video frame buffers</li>
+<li>violate use policy (e.g., alter time on the client machine to extend an expired document lease)</li>
+<li>if an attacker has physical possession of a platform, he may be able to use memory snooping or cold<br>boot style attacks [6] to acquire the keying material for a valid ERM solution. This would permit the attacker to create malware which could use those stolen keys to effectively impersonate a valid ERM client.</li>
+<li>an authorized consumer of enterprise data may, in rare circumstances, wish to maliciously copy large<br>amounts of sensitive digital information, and could directly modify the ERM solution to avoid logging and other forms of detection.</li>
+</ul>
+<h3><span id="design-goals">Design Goals</span></h3><p>Protect the system against the following threats:</p>
+<ol>
+<li>Document content and encryption key theft.</li>
+<li>Platform and application identity spoofing.</li>
+<li>Use policy and activity log tampering.</li>
+</ol>
+<p>（针对于<strong>client</strong>端，但服务端也可以用类似的方法扩展保护）</p>
+<h3><span id="secure-erm-architecture">Secure ERM Architecture</span></h3><p><img src="0420-0503_pic2.png" style="zoom:50%;"></p>
+<ul>
+<li><p><strong>Client</strong> <code>Authentication Session Mgmt</code><br>Authenticates the client platform and user to its counterpart in the ERM server<br>Generate a verifiable report</p>
+<ul>
+<li>client’s identity</li>
+<li>information about the user running the ERM session</li>
+</ul>
+<p>由server的<code>Directory Service</code>进行验证<br>随后application secrets被安全地封装到client的平台（利用SGX封装能力），将用于与服务端间建立secure session</p>
+</li>
+<li><p><code>ERM Database</code>：存放document use policy &amp; encryption key</p>
+</li>
+<li><p><code>Policy Engine</code>：文档拥有者利用<code>Policy Engine</code>规定use policy &amp; access control<br>随后这些policy通过安全通信channel传送给server<br>受保护的文档在enclave中被加密（用server端随机生成的key，保存在<code>ERM Database</code>）。这些文档本身不需要被存放在服务端数据库中！</p>
+<p>一个授权的用户接收这个加密的文档，可以通过enclave中的<code>Document Reader</code>进行阅读。<code>Policy Engine</code>确定use policy（从服务端下载的）和用户操作一致后，也可以获得decryption key并将控制权转交给<code>Document Reader</code>组件。<code>Document Reader</code>在enclave中对document解密生成bitmap，利用<strong>PAVP</strong>技术加密bitmap（与GPU间共享的对称密钥），传输给图形硬件进行显示。</p>
+</li>
+<li><p><code>Activity Logger</code>：记录用户与文档阅读、传输相关的活动并呈递给服务器。</p>
+</li>
+</ul>
+<h2><span id="secure-video-conferencing-svc">Secure Video Conferencing (SVC)</span></h2><h3><span id="overview">Overview</span></h3><p>the migration of threats from the network onto the computing platform 威胁不仅限于网络中，逐渐转移到计算设备上！</p>
+<h3><span id="threat-model">Threat Model</span></h3><p>consider a two person Secure Video Chat (SVC) application</p>
+<ul>
+<li><p><strong>Session Initiation Protocol (SIP)</strong></p>
+</li>
+<li><p><strong>Real Time Transport Protocol (RTP)</strong></p>
+</li>
+<li><p><strong>Secure Real Time Transport Protocol (SRTP)</strong></p>
+</li>
+</ul>
+<p>The limitation of such a secure video chat is that it is vulnerable to attacks such as the following:</p>
+<ol>
+<li><strong>Keys used for SRTP encryption</strong> can be stolen from the application’s memory during processing.</li>
+<li>The <strong>cleartext AV stream</strong> can be stolen from the application’s memory during <strong>media stream processing</strong> or <strong>SRTP decryption</strong>.</li>
+<li><strong>User identities</strong> can be spoofed, compromising participant authentication.</li>
+<li>Any <strong>policy</strong>, such as logging the call events, or not allowing recording, etc., can be <strong>violated</strong> through modification of application code that enforces such policies.</li>
+</ol>
+<h3><span id="secure-video-conferencing-architecture">Secure Video Conferencing Architecture</span></h3><p>Modify the design of the stack with well-defined <strong>trusted</strong> and <strong>untrusted</strong> components</p>
+<p>The <strong>untrusted</strong> components contained code and data for interfacing with operating system services and drivers.</p>
+<p>The <strong>trusted</strong> components contained code and data requiring confidentiality and/or integrity protection such as SRTP keys, media streams, cryptographic operations, policy enforcement logic etc.</p>
+<ul>
+<li>Authentication</li>
+<li>Media Processing</li>
+<li>SRTP</li>
+<li>Trusted I/O</li>
+<li>Policy Engine and Call Logging</li>
+</ul>
+<p><img src="0420-0503_pic3.png" style="zoom:50%;"></p>
+<h2><span id="future-work">Future Work</span></h2><h3><span id="hardening-server-processing">Hardening Server Processing</span></h3><h3><span id="trusted-input">Trusted Input</span></h3><h3><span id="improved-tools">Improved Tools</span></h3><h2><span id="related-work-and-summary">Related Work and Summary</span></h2><h3><span id="managed-runtime-environment-mrte">Managed Runtime Environment (MRTE)</span></h3><h3><span id="tamper-resistant-software-trs">Tamper Resistant Software (TRS)</span></h3><blockquote>
+<p>A challenge to all software approaches is to be certain that privileged software is trustworthy</p>
+<p>TPM</p>
+<p>TXT</p>
+</blockquote>
+<h3><span id="flicker">Flicker</span></h3><h3><span id="overshadow">Overshadow</span></h3>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/05/22/Notion%E6%8E%A8%E5%B9%BF%E8%A7%86%E9%A2%91/" rel="prev" title="Notion推广视频">
+                Notion推广视频 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/vtu_cat.jpg"
+               alt="VTU" />
+          <p class="site-author-name" itemprop="name">VTU</p>
+           
+              <p class="site-description motion-element" itemprop="description">VTU's Personal Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text">RSA算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.1.</span> <span class="nav-text">产生公私钥对</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.2.</span> <span class="nav-text">RSA加密 — 使用公钥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.3.</span> <span class="nav-text">RSA解密 — 使用私钥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.4.</span> <span class="nav-text">RSA数字签名&amp;验证</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.4.1.</span> <span class="nav-text">签名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.4.2.</span> <span class="nav-text">验证</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.5.</span> <span class="nav-text">RSA公开密钥密码体制 — 非对称密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.6.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">2.</span> <span class="nav-text">One-time Password (OTP)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.2.</span> <span class="nav-text">Design Goals</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.3.</span> <span class="nav-text">Secure One-time Password Architecture</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.3.1.</span> <span class="nav-text">Installing the OTP plugin on the client device &amp; Generating a shared key</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.3.2.</span> <span class="nav-text">Use OTP as a second authentication factor</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">3.</span> <span class="nav-text">Enterprise Rights Management (ERM)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">3.1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">3.2.</span> <span class="nav-text">Design Goals</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">3.3.</span> <span class="nav-text">Secure ERM Architecture</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">4.</span> <span class="nav-text">Secure Video Conferencing (SVC)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">4.1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">4.2.</span> <span class="nav-text">Threat Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">4.3.</span> <span class="nav-text">Secure Video Conferencing Architecture</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">5.</span> <span class="nav-text">Future Work</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">5.1.</span> <span class="nav-text">Hardening Server Processing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">5.2.</span> <span class="nav-text">Trusted Input</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">5.3.</span> <span class="nav-text">Improved Tools</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">6.</span> <span class="nav-text">Related Work and Summary</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">6.1.</span> <span class="nav-text">Managed Runtime Environment (MRTE)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">6.2.</span> <span class="nav-text">Tamper Resistant Software (TRS)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">6.3.</span> <span class="nav-text">Flicker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">6.4.</span> <span class="nav-text">Overshadow</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">VTU</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="SGX学习笔记 vol.1 Part 1: Introduction to Intel SGX and Detecting and Enabling Intel SGX Part 2: Introduction to Intel SGX applications Part 3: Sample application overview Part 4: Fundamentals of the En">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SGX学习1">
+<meta property="og:url" content="http://yoursite.com/2020/05/28/SGX-Learning1/index.html">
+<meta property="og:site_name" content="VTU :)">
+<meta property="og:description" content="SGX学习笔记 vol.1 Part 1: Introduction to Intel SGX and Detecting and Enabling Intel SGX Part 2: Introduction to Intel SGX applications Part 3: Sample application overview Part 4: Fundamentals of the En">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://software.intel.com/content/dam/develop/external/us/en/images/sgx-web-training-application-parts-816585.png">
+<meta property="og:image" content="https://software.intel.com/content/dam/develop/external/us/en/images/sgx-web-training-file-encrypter-arch-1-816585.png">
+<meta property="og:image" content="https://software.intel.com/content/dam/develop/external/us/en/images/sgx-web-training-file-encrypter-arch-2-816585.png">
+<meta property="article:published_time" content="2020-05-28T15:58:44.000Z">
+<meta property="article:modified_time" content="2020-05-28T16:12:00.945Z">
+<meta property="article:author" content="VTU">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://software.intel.com/content/dam/develop/external/us/en/images/sgx-web-training-application-parts-816585.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/05/28/SGX-Learning1/"/>
+
+
+
+
+
+  <title>SGX学习1 | VTU :)</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">VTU :)</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/28/SGX-Learning1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="VTU">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/vtu_cat.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="VTU :)">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SGX学习1</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-28T23:58:44+08:00">
+                2020-05-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <!-- toc -->
+<ul>
+<li><a href="#sgx学习笔记-vol1">SGX学习笔记 vol.1</a><ul>
+<li><a href="#part-1-introduction-to-intel-sgx-and-detecting-and-enabling-intel-sgx">Part 1: Introduction to Intel SGX and Detecting and Enabling Intel SGX</a></li>
+<li><a href="#part-2-introduction-to-intel-sgx-applications">Part 2: Introduction to Intel SGX applications</a></li>
+<li><a href="#part-3-sample-application-overview">Part 3: Sample application overview</a></li>
+<li><a href="#part-4-fundamentals-of-the-enclave-definition-language">Part 4: Fundamentals of the Enclave Definition Language</a></li>
+<li><a href="#part-5-advanced-topics-in-the-enclave-definition-language">Part 5: Advanced topics in the Enclave Definition Language</a></li>
+<li><a href="#part-6-debugging-intel-sgx-applications">Part 6: Debugging Intel SGX applications</a></li>
+<li><a href="#part-7-data-sealing">Part 7: Data sealing</a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+<h1><span id="sgx学习笔记-vol1">SGX学习笔记 vol.1</span></h1><p>官方入门教程：<a href="https://software.intel.com/content/www/us/en/develop/articles/intel-sgx-web-based-training.html" target="_blank" rel="noopener">Intel® Software Guard Extensions (Intel® SGX) Web-Based Training</a>，含上传至Youtube的7个视频，由B站 <a href="https://space.bilibili.com/8334241" target="_blank" rel="noopener"><strong>伤心的笔</strong></a> 搬运&amp;翻译，在下面列出。</p>
+<h2><span id="part-1-introduction-to-intel-sgx-and-detecting-and-enabling-intel-sgx">Part 1: Introduction to Intel SGX and Detecting and Enabling Intel SGX</span></h2><p>在<strong>不可信</strong>部分中：</p>
+<ol>
+<li>创建enclave</li>
+<li>调用可信函数</li>
+</ol>
+<p>在<strong>可信</strong>部分中：</p>
+<ol>
+<li>开始执行并以明文的形式访问代码、数据</li>
+<li>程序返回至不可信部分，失去对可信部分的访问权限</li>
+</ol>
+<p><img src="https://software.intel.com/content/dam/develop/external/us/en/images/sgx-web-training-application-parts-816585.png" style="zoom: 67%;"></p>
+<iframe height="480" width="600" src="//player.bilibili.com/player.html?aid=37239146&amp;bvid=BV1Wt411D7Rt&amp;cid=65446367&amp;page=1&amp;high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+
+<p>前置条件：</p>
+<ul>
+<li>CPU支持SGX</li>
+<li>系统BIOS支持SGX</li>
+<li>BIOS开启SGX</li>
+<li>系统已经安装Intel® PSW (Platform Software)</li>
+</ul>
+<p>BIOS中可能有3种关于SGX的设定：</p>
+<ul>
+<li>Enabled</li>
+<li>Disabled</li>
+<li>Software Controlled：即由软件控制，对用户更友好</li>
+</ul>
+<iframe height="480" width="600" src="//player.bilibili.com/player.html?aid=37246281&amp;bvid=BV1jt411D79Q&amp;cid=65459190&amp;page=1&amp;high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+
+<h2><span id="part-2-introduction-to-intel-sgx-applications">Part 2: Introduction to Intel SGX applications</span></h2><p><strong>分割代码</strong></p>
+<ul>
+<li>enclave</li>
+<li>非enclave</li>
+<li>如何交互</li>
+</ul>
+<p>具体步骤如下：</p>
+<ol>
+<li>确定机密信息secret</li>
+<li>确定secrets的提供者、使用者，绘制secret流程图</li>
+<li>确定安全边界<ul>
+<li>maximize the number of secrets in it</li>
+<li>minimize the number of secrets that cross it</li>
+<li>不要包含非secret数据</li>
+</ul>
+</li>
+<li>精简enclave中的代码<ul>
+<li>enclave应该尽可能小</li>
+<li>减少calls into and out of the enclave（性能↓），尽可能一次做尽可能多的工作</li>
+</ul>
+</li>
+</ol>
+<iframe height="480" width="600" src="//player.bilibili.com/player.html?aid=37252279&amp;bvid=BV17t411D7xK&amp;cid=65469673&amp;page=1&amp;high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+
+<h2><span id="part-3-sample-application-overview">Part 3: Sample application overview</span></h2><p>Several of the lab exercises from this point on consist of making code changes to a sample Intel SGX application called the File Encrypter. This is a very simple program that encrypts and decrypts files using a password that you provide. The application’s user interface is written in C#, and it uses C++/CLI to get to native Win32 code so that it can call into the enclave. The majority of the code for this application has already been written, but you’ll be <strong>adding ECALL and OCALL definitions</strong>, as well as <strong>implementing some of the code that links the untrusted application to the enclave</strong>.</p>
+<blockquote>
+<p><strong>Warning (xswl):</strong> The File Encrypter is a sample application with minimal error handling, created for training purposes only. It is not robust enough for general use as a security application. You should only use it in this training class, and you should never use it to encrypt critical files.</p>
+</blockquote>
+<p><img src="https://software.intel.com/content/dam/develop/external/us/en/images/sgx-web-training-file-encrypter-arch-1-816585.png" style="zoom: 80%;"></p>
+<p>The application package consists of four components:</p>
+<ul>
+<li>A C# executable which implements the user interface.</li>
+<li>A mixed-mode DLL that uses C++/CLI to get from managed code to native.</li>
+<li>A bridge DLL consisting of 100% native C code that interacts with the enclave.</li>
+<li>The Intel SGX enclave which implements the encryption routines.</li>
+</ul>
+<p><img src="https://software.intel.com/content/dam/develop/external/us/en/images/sgx-web-training-file-encrypter-arch-2-816585.png" style="zoom:80%;"></p>
+<h2><span id="part-4-fundamentals-of-the-enclave-definition-language">Part 4: Fundamentals of the Enclave Definition Language</span></h2><ul>
+<li><p><strong>E-CALL</strong> (entry call): entry points into the enclave from the untrusted application</p>
+</li>
+<li><p><strong>O-CALL</strong> (outside call): allow enclave functions to call out to the untrusted application and then return to the enclave</p>
+</li>
+</ul>
+<p><strong>EDGER8R</strong> — 特殊工具</p>
+<ul>
+<li>自动生成E-CALL、O-CALL代理函数</li>
+<li>类似调用C函数</li>
+</ul>
+<p><strong>EDL</strong> Enclave Definition Language，类似C语言头文件。e.g.：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">enclave&#123;</span><br><span class="line"></span><br><span class="line">	trusted &#123;</span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">store_secret</span><span class="params">([in, <span class="built_in">string</span>] <span class="keyword">char</span> *msg)</span></span>;</span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">print_hash</span><span class="params">([out] <span class="keyword">sgx_status_t</span> *error)</span></span>; </span><br><span class="line">	&#125;;</span><br><span class="line">	untrusted &#123;</span><br><span class="line">		<span class="function"><span class="keyword">void</span> <span class="title">o_print_hash</span><span class="params">([in] <span class="keyword">unsigned</span> <span class="keyword">char</span> hash[<span class="number">32</span>])</span></span>; </span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>trusted</code>部分至少有一个函数声明具有<code>public</code>关键字</li>
+<li>如果<code>trusted</code>部分函数声明没有<code>public</code>，则其只能被<code>untrusted</code>部分的函数间接调用</li>
+<li>每个指针或参数前必须有方括号来描述数据封送的具体处理过程：<code>in</code>、<code>out</code>、<code>size</code>、<code>count</code> (也可以用<code>string</code>/<code>wstring</code>，但这样的话不能与<code>out</code>同时存在)等，其中的参数可以是函数参数</li>
+</ul>
+<iframe height="480" width="600" src="//player.bilibili.com/player.html?aid=37262752&amp;bvid=BV1at411D78R&amp;cid=65488165&amp;page=1&amp;high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+
+<h2><span id="part-5-advanced-topics-in-the-enclave-definition-language">Part 5: Advanced topics in the Enclave Definition Language</span></h2><p>EDL的进阶用法：</p>
+<ul>
+<li><p>函数参数为<code>void*</code>的指针时，方括号中可以使用<code>size</code>关键字指定大小</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">my_ecall</span><span class="params">([in, count=<span class="number">32</span>, <span class="built_in">size</span>=sz] <span class="keyword">void</span> *<span class="built_in">buffer</span>, <span class="keyword">size_t</span> sz)</span></span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>只想传送一个地址时，方括号中可以用<code>user_check</code>关键字</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">my_ecall</span><span class="params">([user_check] <span class="keyword">void</span> *<span class="built_in">buffer</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>untrusted</code>部分的O-CALL默认不允许调用E-CALL，需要通过<code>allow</code>关键字声明其可以调用的E_CALL</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">enclave&#123;</span><br><span class="line">    from <span class="string">"sgx_tstdc.edl"</span> <span class="keyword">import</span> *;</span><br><span class="line">    </span><br><span class="line">	trusted &#123;</span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init_hash</span><span class="params">()</span></span>;</span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">get_hash</span><span class="params">([out] <span class="keyword">char</span> hash[<span class="number">32</span>])</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">update_hash</span><span class="params">([in, count=len] <span class="keyword">char</span> *block, <span class="keyword">size_t</span> len)</span></span>;</span><br><span class="line">	&#125;;</span><br><span class="line">	untrusted &#123;</span><br><span class="line">		<span class="function"><span class="keyword">size_t</span> <span class="title">get_msg_block</span><span class="params">()</span> <span class="title">allow</span><span class="params">(update_hash)</span></span>;</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<iframe height="480" width="600" src="//player.bilibili.com/player.html?aid=37267884&amp;bvid=BV1Yt411D7sU&amp;cid=65498439&amp;page=1&amp;high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+
+<h2><span id="part-6-debugging-intel-sgx-applications">Part 6: Debugging Intel SGX applications</span></h2><ul>
+<li><p>使用<strong>Intel® SGX Debugger</strong>进行debug，将工作目录切换到<code>$OutDir</code></p>
+</li>
+<li><p>Release版本不能调试</p>
+</li>
+<li>使用.NET托管的应用程序（如C#）不能直接debug，要先打开可执行程序，再将debugger附加至该进程（详见视频）</li>
+</ul>
+<iframe height="480" width="600" src="//player.bilibili.com/player.html?aid=37272104&amp;bvid=BV1et411D7yf&amp;cid=65505702&amp;page=1&amp;high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+
+<h2><span id="part-7-data-sealing">Part 7: Data sealing</span></h2><p><strong>Intel® SGX</strong>提供了<strong>data sealing</strong>的功能：</p>
+<ul>
+<li>数据在enclave内被密封，使用从CPU获得的密钥</li>
+<li>密封后的数据（块）只能被生成它的同一个系统解封/解密</li>
+<li>保证机密性、完整性、真实性</li>
+</ul>
+<p><strong>2 key policies</strong></p>
+<ul>
+<li>MRENCLAVE<ul>
+<li>同一个电脑同一个安全区才能解封</li>
+</ul>
+</li>
+<li>MRSIGNED - 基于用户提供的密钥加密<ul>
+<li>同一个电脑中，只要有用户密钥就可以解封</li>
+</ul>
+</li>
+</ul>
+<p><strong>两种策略中，电脑指纹都是密钥的一个输入，因而不能在另一台电脑上unseal！</strong></p>
+<p><strong>Debug模式、Release模式也是密钥的输入，即互不能解封！</strong></p>
+<p style="color:red;font-weight:bold">Warning: enclave不会验证不可信部分！</p>
+
+<p>即：</p>
+<ul>
+<li><p>不能假设只有你的程序会加载enclave，别人可能去加载</p>
+</li>
+<li><p>E-CALL不一定会按照你心目中的（特定的）顺序执行，别人可能自己指定顺序</p>
+</li>
+</ul>
+<p>因此：</p>
+<ul>
+<li>在设计时，enclave的API绝不能在seal、unseal时<ul>
+<li>泄露secrets</li>
+<li>授予不该授予的权限</li>
+</ul>
+</li>
+</ul>
+<iframe height="480" width="600" src="//player.bilibili.com/player.html?aid=37278142&amp;bvid=BV14t411D7dk&amp;cid=65516707&amp;page=1&amp;high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/25/Code-Server-Config/" rel="next" title="Code-Server配置">
+                <i class="fa fa-chevron-left"></i> Code-Server配置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/06/25/ADS-AVL-Trees-Splay-Trees-and-Amortized-Analysis/" rel="prev" title="ADS-AVL-Trees-Splay-Trees-and-Amortized-Analysis">
+                ADS-AVL-Trees-Splay-Trees-and-Amortized-Analysis <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/vtu_cat.jpg"
+               alt="VTU" />
+          <p class="site-author-name" itemprop="name">VTU</p>
+           
+              <p class="site-description motion-element" itemprop="description">VTU's Personal Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text">SGX学习笔记 vol.1</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.1.</span> <span class="nav-text">Part 1: Introduction to Intel SGX and Detecting and Enabling Intel SGX</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.2.</span> <span class="nav-text">Part 2: Introduction to Intel SGX applications</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.3.</span> <span class="nav-text">Part 3: Sample application overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.4.</span> <span class="nav-text">Part 4: Fundamentals of the Enclave Definition Language</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.5.</span> <span class="nav-text">Part 5: Advanced topics in the Enclave Definition Language</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.6.</span> <span class="nav-text">Part 6: Debugging Intel SGX applications</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.7.</span> <span class="nav-text">Part 7: Data sealing</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">VTU</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

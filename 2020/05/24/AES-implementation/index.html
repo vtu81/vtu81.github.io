@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="已实现的函数 aes_encrypt MixColumn AddRoundKey ByteSub   Problem Description (with Solution) build_sbox_inverse aes_polynomial_mul ByteSubInverse ShiftRowInverse MixColumnInverse aes_decrypt     已实现的函数aes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AES加密算法实现">
+<meta property="og:url" content="http://yoursite.com/2020/05/24/AES-implementation/index.html">
+<meta property="og:site_name" content="VTU :)">
+<meta property="og:description" content="已实现的函数 aes_encrypt MixColumn AddRoundKey ByteSub   Problem Description (with Solution) build_sbox_inverse aes_polynomial_mul ByteSubInverse ShiftRowInverse MixColumnInverse aes_decrypt     已实现的函数aes">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/05/24/AES-implementation/MixColumn.bmp">
+<meta property="article:published_time" content="2020-05-23T16:02:05.000Z">
+<meta property="article:modified_time" content="2020-05-23T16:20:27.388Z">
+<meta property="article:author" content="VTU">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/05/24/AES-implementation/MixColumn.bmp">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/05/24/AES-implementation/"/>
+
+
+
+
+
+  <title>AES加密算法实现 | VTU :)</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">VTU :)</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/24/AES-implementation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="VTU">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/vtu_cat.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="VTU :)">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">AES加密算法实现</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-24T00:02:05+08:00">
+                2020-05-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <!-- toc -->
+<ul>
+<li><a href="#已实现的函数">已实现的函数</a><ul>
+<li><a href="#aes_encrypt"><code>aes_encrypt</code></a></li>
+<li><a href="#mixcolumn"><code>MixColumn</code></a></li>
+<li><a href="#addroundkey"><code>AddRoundKey</code></a></li>
+<li><a href="#bytesub"><code>ByteSub</code></a></li>
+</ul>
+</li>
+<li><a href="#problem-description-with-solution">Problem Description (with Solution)</a><ul>
+<li><a href="#build_sbox_inverse"><code>build_sbox_inverse</code></a></li>
+<li><a href="#aes_polynomial_mul"><code>aes_polynomial_mul</code></a></li>
+<li><a href="#bytesubinverse"><code>ByteSubInverse</code></a></li>
+<li><a href="#shiftrowinverse"><code>ShiftRowInverse</code></a></li>
+<li><a href="#mixcolumninverse"><code>MixColumnInverse</code></a></li>
+<li><a href="#aes_decrypt"><code>aes_decrypt</code></a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+<h2><span id="已实现的函数">已实现的函数</span></h2><h3><span id="aes_encrypt"><code>aes_encrypt</code></span></h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">aes_encrypt</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *bufin, <span class="keyword">unsigned</span> <span class="keyword">char</span> *bufout, <span class="keyword">unsigned</span> <span class="keyword">char</span> *key)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">int</span> i;</span><br><span class="line">   <span class="keyword">unsigned</span> <span class="keyword">char</span> a[<span class="number">4</span>] = &#123;<span class="number">0x03</span>, <span class="number">0x01</span>, <span class="number">0x01</span>, <span class="number">0x02</span>&#125;; <span class="comment">/* 定义多项式3*X^3+X^2+X+2 */</span></span><br><span class="line">   <span class="keyword">unsigned</span> <span class="keyword">char</span> matrix[<span class="number">4</span>][<span class="number">4</span>];</span><br><span class="line">   <span class="built_in">memcpy</span>(matrix, bufin, <span class="number">4</span>*<span class="number">4</span>); <span class="comment">/* 复制明文16字节到matrix */</span></span><br><span class="line">   AddRoundKey((<span class="keyword">unsigned</span> <span class="keyword">char</span> *)matrix, key); <span class="comment">/* 第0轮只做AddRoundKey() */</span></span><br><span class="line">   <span class="keyword">for</span>(i=<span class="number">1</span>; i&lt;=key_rounds; i++)</span><br><span class="line">   &#123;  <span class="comment">/* 第1至key_rounds轮, 做以下步骤: ByteSub, ShiftRow, MixColumn, AddRoundKey */</span></span><br><span class="line">      ByteSub((<span class="keyword">unsigned</span> <span class="keyword">char</span> *)matrix, <span class="number">16</span>);</span><br><span class="line">      MixColumnInverse((<span class="keyword">unsigned</span> <span class="keyword">char</span> *)matrix, a, <span class="number">0</span>); <span class="comment">/* 不做乘法, 只做矩阵行转列 */</span></span><br><span class="line">      ShiftRow((<span class="keyword">unsigned</span> <span class="keyword">char</span> *)matrix);</span><br><span class="line">      <span class="keyword">if</span>(i != key_rounds)</span><br><span class="line">         MixColumn((<span class="keyword">unsigned</span> <span class="keyword">char</span> *)matrix, a, <span class="number">1</span>); <span class="comment">/* do mul */</span></span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">         MixColumn((<span class="keyword">unsigned</span> <span class="keyword">char</span> *)matrix, a, <span class="number">0</span>); <span class="comment">/* don't mul */</span></span><br><span class="line">      AddRoundKey((<span class="keyword">unsigned</span> <span class="keyword">char</span> *)matrix, key+i*(<span class="number">4</span>*<span class="number">4</span>));</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="built_in">memcpy</span>(bufout, matrix, <span class="number">4</span>*<span class="number">4</span>); <span class="comment">/* 密文复制到bufout */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>第0轮只做<code>AddRoundKey</code>，即<code>matrix</code>与<code>key</code>异或（加法）</li>
+<li>随后进入第1~<code>key_rounds</code>轮循环，每次执行<ol>
+<li>把<code>matrix</code>中的16字节替换成<code>sbox</code>中的值</li>
+<li><code>matrix</code>行转列</li>
+<li><code>matrix</code>循环左移</li>
+<li>做<code>MixColumn</code>（如果是最后一轮不做乘法）</li>
+<li>做<code>AddRoundKey</code>，即<code>matrix</code>与<code>key</code>异或（加法）</li>
+</ol>
+</li>
+</ol>
+<p><img src="MixColumn.bmp" style="zoom: 50%;"></p>
+<blockquote id="fn_注">
+<sup>注</sup>. 2.2 + 2.3步（分割线上方、下方为不同的实现过程，最终采用上方的实现方式，即先行转列，再ShiftRow）<a href="#reffn_注" title="Jump back to footnote [注] in the text."> &#8617;</a>
+</blockquote>
+<h3><span id="mixcolumn"><code>MixColumn</code></span></h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MixColumn</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *p, <span class="keyword">unsigned</span> <span class="keyword">char</span> a[<span class="number">4</span>], <span class="keyword">int</span> do_mul)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">unsigned</span> <span class="keyword">char</span> b[<span class="number">4</span>];</span><br><span class="line">   <span class="keyword">unsigned</span> <span class="keyword">char</span> t[<span class="number">4</span>][<span class="number">4</span>];</span><br><span class="line">   <span class="keyword">int</span> j;</span><br><span class="line">   <span class="keyword">for</span>(j=<span class="number">0</span>; j&lt;<span class="number">4</span>; j++)</span><br><span class="line">   &#123;</span><br><span class="line">      get_column(p, j, b); <span class="comment">/* 从p所指矩阵m中提取第j列, 保存到数组b中. */</span></span><br><span class="line">      <span class="keyword">if</span>(do_mul) <span class="comment">/* 在加密最后一轮以及解密第一轮的MixColumn步骤中不需要做乘法; */</span></span><br><span class="line">         aes_polynomial_mul(a, b, b); <span class="comment">/* 其余轮都要做乘法: b = a*b mod (X^4+1); */</span></span><br><span class="line">      <span class="built_in">memcpy</span>(t[j], b, <span class="number">4</span>); <span class="comment">/* 把乘法所得结果复制到t中第j行 */</span></span><br><span class="line">   &#125;</span><br><span class="line">   <span class="built_in">memcpy</span>(p, t, <span class="number">4</span>*<span class="number">4</span>); <span class="comment">/* 复制t中矩阵到p, 替换掉p中原有矩阵 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>对p指向的$4\times4$矩阵$m$中的4<strong>列</strong>（注意，是列！）做乘法运算;</p>
+</li>
+<li><p>这里的乘法是指有限域$GF(2^8)$多项式模$(X^4+1)$乘法,具体步骤请参考教材p.61及p.62;</p>
+</li>
+<li><p><strong>AES</strong>加密时采用的被乘数a为多项式$3*X^3 + X^2 + X + 2$, 用数组表示为</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> a[<span class="number">4</span>]=&#123;<span class="number">0x03</span>, <span class="number">0x01</span>, <span class="number">0x01</span>, <span class="number">0x02</span>&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>AES</strong>解密时采用的被乘数<code>a</code>为加密所用多项式的<strong>逆</strong>, 即$\{0x0B, 0x0D, 0x09, 0x0E\}$;</p>
+</li>
+<li><p>矩阵$m$中的4列按以下顺序分别与a做乘法运算:</p>
+<ul>
+<li>第0列: 由<code>m[0][0], m[1][0], m[2][0], m[3][0]</code>构成</li>
+<li>第1列: 由<code>m[0][1], m[1][1], m[2][1], m[3][1]</code>构成</li>
+<li>第2列: 由<code>m[0][2], m[1][2], m[2][2], m[3][2]</code>构成</li>
+<li>第3列: 由<code>m[0][3], m[1][3], m[2][3], m[3][3]</code>构成</li>
+</ul>
+</li>
+<li><p>乘法所得<strong>4列转成4行</strong>, 保存到<code>p</code>中, 替换掉<code>p</code>中原有的矩阵;</p>
+</li>
+<li><p><code>do_mul</code>用来控制是否要做乘法运算, 加密最后一轮及解密第一轮<code>do_mul</code> = 0;</p>
+</li>
+</ol>
+<h3><span id="addroundkey"><code>AddRoundKey</code></span></h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">AddRoundKey</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *p, <span class="keyword">unsigned</span> <span class="keyword">char</span> *k)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="comment">/* 把p所指向的4*4明文矩阵与k所指向的4*4密钥矩阵做异或运算:</span></span><br><span class="line"><span class="comment">      p -&gt; 4byte * 4byte matrix</span></span><br><span class="line"><span class="comment">      k -&gt; 4byte * 4byte key</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   ulong32 *pp, *kk;</span><br><span class="line">   <span class="keyword">int</span> i;</span><br><span class="line">   pp = (ulong32 *)p;</span><br><span class="line">   kk = (ulong32 *)k;</span><br><span class="line">   <span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;<span class="number">4</span>; i++)</span><br><span class="line">   &#123;</span><br><span class="line">      pp[i] ^= kk[i];</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="bytesub"><code>ByteSub</code></span></h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ByteSub</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *p, <span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="comment">/* 把p所指向的n字节替换成sbox中的值 */</span></span><br><span class="line">   <span class="keyword">int</span> i;</span><br><span class="line">   <span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;n; i++)</span><br><span class="line">   &#123;</span><br><span class="line">      p[i] = sbox[p[i]];</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2><span id="problem-description-with-solution">Problem Description (with Solution)</span></h2><p>下载<a href="http://10.71.45.100/bhh/myaes.zip" target="_blank" rel="noopener">myaes.zip</a>, 解压缩, 里面包含了vc6的工程文件<code>MyAes.dsw</code>, 双击打开, 可以看到<code>MyAes.c</code>;<br><code>MyAes.c</code>中部分函数的源代码已删除, 这些函数经编译后生成的机器码已转移到<code>aes_lib.lib</code>内。<br>这些已删除的函数包括:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">build_sbox_inverse</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">aes_polynomial_mul</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> x[<span class="number">4</span>], <span class="keyword">unsigned</span> <span class="keyword">char</span> y[<span class="number">4</span>], <span class="keyword">unsigned</span> <span class="keyword">char</span> z[<span class="number">4</span>])</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ByteSubInverse</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *p, <span class="keyword">int</span> n)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ShiftRowInverse</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *p)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MixColumnInverse</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *p, <span class="keyword">unsigned</span> <span class="keyword">char</span> a[<span class="number">4</span>], <span class="keyword">int</span> do_mul)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">aes_decrypt</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *bufin, <span class="keyword">unsigned</span> <span class="keyword">char</span> *bufout, <span class="keyword">unsigned</span> <span class="keyword">char</span> *key)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>请对本程序(<code>MyAes.c</code>)做以下修改:</p>
+<ul>
+<li>重写上述函数</li>
+<li>删除<code>#pragma comment(lib, &quot;aes_lib.lib&quot;)</code></li>
+</ul>
+<p>要求:</p>
+<ul>
+<li>修改后的程序必须能正常编译运行</li>
+<li>运行产生的输出结果与本程序一致</li>
+</ul>
+<p>如果不想用<strong>VC6</strong>测试程序, 而是要在<strong>Linux</strong>系统下编程, 请执行以下命令进行编译、运行:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc MyAes.c aes_lib.o -o MyAes</span><br><span class="line">./MyAes</span><br></pre></td></tr></table></figure>
+<p><strong>待补全的函数及各自功能为：</strong></p>
+<p style="color:red;font-style:bold;text-align:center;font-size:25px;border:2px dotted red;width:150px;margin: auto">已经补全</p>
+
+<h3><span id="build_sbox_inverse"><code>build_sbox_inverse</code></span></h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">build_sbox_inverse</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">int</span> i;</span><br><span class="line">   <span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;<span class="number">256</span>; i++)</span><br><span class="line">   &#123;</span><br><span class="line">      sbox_inverse[sbox[i]] = i;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="aes_polynomial_mul"><code>aes_polynomial_mul</code></span></h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">aes_polynomial_mul</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> x[<span class="number">4</span>], <span class="keyword">unsigned</span> <span class="keyword">char</span> y[<span class="number">4</span>], <span class="keyword">unsigned</span> <span class="keyword">char</span> z[<span class="number">4</span>])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">int</span> i, j;</span><br><span class="line">   <span class="keyword">unsigned</span> <span class="keyword">char</span> tmp[<span class="number">4</span>];</span><br><span class="line">   <span class="built_in">memset</span>(tmp, <span class="number">0</span>, <span class="number">4</span>);</span><br><span class="line">   <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="keyword">for</span>(j = <span class="number">0</span>; j &lt; <span class="number">4</span>; j++)</span><br><span class="line">         tmp[i] ^= aes_8bit_mul_mod_0x11B(x[(j + <span class="number">3</span> - i)%<span class="number">4</span>], y[j]);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="built_in">memcpy</span>(z, tmp, <span class="number">4</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有限域$GF(2^8)$多项式乘法, 计算$z = x * y\mod (x^4  + 1);$</p>
+<p>当被乘数为多项式$3X^3  + X^2  + X + 2$的4个系数$\{3, 1, 1, 2\}$时, 转化成矩阵为:</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+2&3&1&1\\
+1&2&3&1\\
+1&1&2&3\\
+3&1&1&2
+\end{bmatrix}</script><p>当被乘数为多项式$0xB<em>X^3  + 0xD</em>X^2  + 0x9*X + 0xE$的4个系数$\{0xB, 0xD, 0x9, 0xE\}$时, 转化成矩阵为:</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+      E &B &D &9\\
+      9 &E &B &D\\
+      D &9 &E &B\\
+      B &D &9 &E\\
+\end{bmatrix}</script><p>乘数也是一个3次多项式, 它的4个系数保存在$y$中；</p>
+<p>$x * y \mod (x^4  + 1)$的计算结果仍是一个3次多项式, 它的4个系数保存在$z$中.</p>
+<h3><span id="bytesubinverse"><code>ByteSubInverse</code></span></h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ByteSubInverse</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *p, <span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="comment">/* 把p所指向的n字节替换成sbox反查表sbox_inverse中的值 */</span></span><br><span class="line">   <span class="keyword">int</span> i;</span><br><span class="line">   <span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;n; i++)</span><br><span class="line">   &#123;</span><br><span class="line">      p[i] = sbox_inverse[p[i]];</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="shiftrowinverse"><code>ShiftRowInverse</code></span></h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ShiftRowInverse</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *p)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="comment">/* 对p所指向的4*4矩阵做逐行循环右移操作:</span></span><br><span class="line"><span class="comment">      第0行: 不移动;</span></span><br><span class="line"><span class="comment">      第1行: 循环右移1字节</span></span><br><span class="line"><span class="comment">      第2行: 循环右移2字节</span></span><br><span class="line"><span class="comment">      第3行: 循环右移3字节</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">   <span class="keyword">int</span> i;</span><br><span class="line">   <span class="keyword">for</span>(i=<span class="number">1</span>; i&lt;<span class="number">4</span>; i++)</span><br><span class="line">   &#123;</span><br><span class="line">      ror_a_row(p+i*<span class="number">4</span>, i);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="mixcolumninverse"><code>MixColumnInverse</code></span></h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MixColumnInverse</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *p, <span class="keyword">unsigned</span> <span class="keyword">char</span> a[<span class="number">4</span>], <span class="keyword">int</span> do_mul)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">unsigned</span> <span class="keyword">char</span> b[<span class="number">4</span>];</span><br><span class="line">   <span class="keyword">unsigned</span> <span class="keyword">char</span> t[<span class="number">4</span>][<span class="number">4</span>];</span><br><span class="line">   <span class="keyword">int</span> j;</span><br><span class="line">   <span class="keyword">for</span>(j=<span class="number">0</span>; j&lt;<span class="number">4</span>; j++)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="built_in">memcpy</span>(b, p + j * <span class="number">4</span>, <span class="number">4</span>); <span class="comment">/* 从p所指矩阵m中提取第j行, 保存到数组b中. */</span></span><br><span class="line">      <span class="keyword">if</span>(do_mul) <span class="comment">/* 在加密最后一轮以及解密第一轮的MixColumn步骤中不需要做乘法; */</span></span><br><span class="line">         aes_polynomial_mul(a, b, b); <span class="comment">/* 其余轮都要做乘法: b = a*b mod (X^4+1); */</span></span><br><span class="line">      put_column(b, (<span class="keyword">unsigned</span> <span class="keyword">char</span>*)t, j); <span class="comment">/* 把乘法所得结果b复制到t中第j列 */</span></span><br><span class="line">   &#125;</span><br><span class="line">   <span class="built_in">memcpy</span>(p, t, <span class="number">4</span>*<span class="number">4</span>); <span class="comment">/* 复制t中矩阵到p, 替换掉p中原有矩阵 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>把<code>p</code>指向的$4\times4$矩阵$m$中的4<strong>行</strong>（与之前的<code>MixColumn</code>不同，是行！）逐<strong>行</strong>与矩阵<code>a</code>做乘法运算;</p>
+</li>
+<li><p>这里的乘法是指有限域$GF(2^8)$多项式模$(X^4+1)$乘法;</p>
+</li>
+<li><p>被乘数<code>a</code>为多项式$0xB <em> X^3 + 0xD </em> X^2 + 0x9 * X + 0xE$的4个系数, 即$\{0x0B, 0x0D, 0x09, 0x0E\}$, 展开为矩阵就是:</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+      E &B &D &9\\
+      9 &E &B &D\\
+      D &9 &E &B\\
+      B &D &9 &E\\
+\end{bmatrix}</script></li>
+<li><p>矩阵$m$中的4行逐行与<code>a</code>做乘法运算后, 按以下顺序<strong>转成矩阵$t$中的列</strong>:</p>
+<ul>
+<li>第0列: $a * m[0]$</li>
+<li>第1列: $a * m[1]$</li>
+<li>第2列: $a * m[2]$</li>
+<li>第3列: $a * m[3]$</li>
+</ul>
+</li>
+<li><p>复制$t$到<code>p</code>中, 替换掉<code>p</code>中原有的矩阵;</p>
+</li>
+<li><p><code>do_mul</code>用来控制是否要做乘法运算, 加密最后一轮及解密第一轮<code>do_mul</code> = 0;</p>
+</li>
+</ol>
+<h3><span id="aes_decrypt"><code>aes_decrypt</code></span></h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">aes_decrypt</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *bufin, <span class="keyword">unsigned</span> <span class="keyword">char</span> *bufout, <span class="keyword">unsigned</span> <span class="keyword">char</span> *key)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="comment">/* 使用key对bufin中包含的16字节密文进行解密, 产生16字节明文存放到bufout */</span></span><br><span class="line">   <span class="comment">/* 具体步骤请参考以下函数:</span></span><br><span class="line"><span class="comment">      void aes_encrypt(unsigned char *bufin, unsigned char *bufout, unsigned char *key);</span></span><br><span class="line"><span class="comment">      但要注意解密步骤的顺序与加密步骤是相反的。</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">   <span class="keyword">int</span> i;</span><br><span class="line">   <span class="keyword">unsigned</span> <span class="keyword">char</span> a[<span class="number">4</span>] = &#123;<span class="number">0x0B</span>, <span class="number">0x0D</span>, <span class="number">0x09</span>, <span class="number">0x0E</span>&#125;; <span class="comment">/* 定义多项式B*X^3+D*X^2+9*X+E */</span></span><br><span class="line">   <span class="keyword">unsigned</span> <span class="keyword">char</span> matrix[<span class="number">4</span>][<span class="number">4</span>];</span><br><span class="line">   <span class="built_in">memcpy</span>(matrix, bufin, <span class="number">4</span>*<span class="number">4</span>); <span class="comment">/* 复制密文16字节到matrix */</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">//第0轮</span></span><br><span class="line">   AddRoundKey((<span class="keyword">unsigned</span> <span class="keyword">char</span> *)matrix, key+key_rounds*(<span class="number">4</span>*<span class="number">4</span>));</span><br><span class="line">   MixColumnInverse((<span class="keyword">unsigned</span> <span class="keyword">char</span> *)matrix, a, <span class="number">0</span>); <span class="comment">/* don't mul */</span></span><br><span class="line">   ShiftRowInverse((<span class="keyword">unsigned</span> <span class="keyword">char</span> *)matrix); <span class="comment">//循环右移</span></span><br><span class="line">   MixColumnInverse((<span class="keyword">unsigned</span> <span class="keyword">char</span> *)matrix, a, <span class="number">0</span>); <span class="comment">/* 不做乘法, 只做矩阵列转行 */</span></span><br><span class="line">   ByteSubInverse((<span class="keyword">unsigned</span> <span class="keyword">char</span> *)matrix, <span class="number">16</span>); <span class="comment">//根据反查表变换</span></span><br><span class="line">   </span><br><span class="line">   <span class="keyword">for</span>(i=key_rounds<span class="number">-1</span>; i&gt;=<span class="number">1</span>; i--)</span><br><span class="line">   &#123;  <span class="comment">/* 第1至key_rounds-1轮, 做以下步骤: ByteSub, ShiftRow, MixColumn, AddRoundKey */</span></span><br><span class="line">      AddRoundKey((<span class="keyword">unsigned</span> <span class="keyword">char</span> *)matrix, key+i*(<span class="number">4</span>*<span class="number">4</span>));</span><br><span class="line">      MixColumnInverse((<span class="keyword">unsigned</span> <span class="keyword">char</span> *)matrix, a, <span class="number">1</span>); <span class="comment">/* do mul */</span></span><br><span class="line">      ShiftRowInverse((<span class="keyword">unsigned</span> <span class="keyword">char</span> *)matrix); <span class="comment">//循环右移</span></span><br><span class="line">      MixColumnInverse((<span class="keyword">unsigned</span> <span class="keyword">char</span> *)matrix, a, <span class="number">0</span>); <span class="comment">/* 不做乘法, 只做矩阵列转行 */</span></span><br><span class="line">      ByteSubInverse((<span class="keyword">unsigned</span> <span class="keyword">char</span> *)matrix, <span class="number">16</span>); <span class="comment">//根据反查表变换</span></span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">//最后一轮只做AddRoundKey()</span></span><br><span class="line">   AddRoundKey((<span class="keyword">unsigned</span> <span class="keyword">char</span> *)matrix, key);</span><br><span class="line">   <span class="built_in">memcpy</span>(bufout, matrix, <span class="number">4</span>*<span class="number">4</span>); <span class="comment">/* 明文复制到bufout */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/22/Notion%E6%8E%A8%E5%B9%BF%E8%A7%86%E9%A2%91/" rel="next" title="Notion推广视频">
+                <i class="fa fa-chevron-left"></i> Notion推广视频
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/05/24/Intranet-penetration/" rel="prev" title="内网穿透">
+                内网穿透 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/vtu_cat.jpg"
+               alt="VTU" />
+          <p class="site-author-name" itemprop="name">VTU</p>
+           
+              <p class="site-description motion-element" itemprop="description">VTU's Personal Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text">已实现的函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.1.</span> <span class="nav-text">aes_encrypt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.2.</span> <span class="nav-text">MixColumn</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.3.</span> <span class="nav-text">AddRoundKey</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.4.</span> <span class="nav-text">ByteSub</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">2.</span> <span class="nav-text">Problem Description (with Solution)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.1.</span> <span class="nav-text">build_sbox_inverse</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.2.</span> <span class="nav-text">aes_polynomial_mul</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.3.</span> <span class="nav-text">ByteSubInverse</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.4.</span> <span class="nav-text">ShiftRowInverse</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.5.</span> <span class="nav-text">MixColumnInverse</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.6.</span> <span class="nav-text">aes_decrypt</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">VTU</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
