@@ -9,7 +9,7 @@
 locale                   : "en-US"
 title                    : "VTU"
 title_separator          : "-"
-name                     : &name "Tinghao Xie"
+name                     : &name "Tinghao(Vitus) Xie"
 description              : &description "personal description"
 url                      : http://vtu.life # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
@@ -80,13 +80,14 @@ analytics:
 
 # Site Author
 author:
-  name             : "Tinghao Xie"
-  avatar           : "selfie_1024.jpg"
-  bio              : "A junior student majoring in Computer Science and Technology at Zhejiang University."
+  name             : "Tinghao(Vitus) Xie"
+  avatar           : "portrait_0428.jpeg"
+  bio              : "A senior student majoring in Computer Science and Technology at Zhejiang University."
   location         : "China"
+  github           : "vtu81"
   employer         :
-  pubmed           : "https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
-  googlescholar    : "http://yourfullgooglescholarurl.com"
+  pubmed           : #"https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
+  googlescholar    : #"http://yourfullgooglescholarurl.com"
   email            : "vtu@zju.edu.com"
   researchgate     :  # example: "https://www.researchgate.net/profile/yourprofile"
   uri              :
@@ -96,10 +97,9 @@ author:
   flickr           :
   facebook         :
   foursquare       :
-  github           : "vtu81"
   google_plus      :
   keybase          :
-  instagram        : "vitus_xie"
+  instagram        : #"vitus_xie"
   impactstory      : #"https://profiles.impactstory.org/u/xxxx-xxxx-xxxx-xxxx"
   lastfm           :
   linkedin         : "tinghao-xie-9418401ba"

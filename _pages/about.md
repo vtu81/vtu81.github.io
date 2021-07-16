@@ -8,4 +8,8 @@ redirect_from:
   - /about.html
 ---
 
-Hello, I am **Tinghao Xie**, a junior student majoring in [Computer Science and Technology](http://www.en.cs.zju.edu.cn) at [Zhejiang University](http://www.zju.edu.cn/english/). You can also call me by **Vitus** or **VTU**.
+![visitors](https://visitor-badge.laobi.icu/badge?page_id=vtu.life)
+
+Hello, I am **Tinghao(Vitus) Xie**, a senior undergraduate student majoring in [Computer Science and Technology](http://www.en.cs.zju.edu.cn) at [Zhejiang University](http://www.zju.edu.cn/english/). My current research interest lies in the intersection of secure, efficient, robust AI and systems.
+
+* Feel free to visit my recent projects and resume through the navigation bar!
