@@ -8,3 +8,7 @@ redirect_from:
 ---
 
 My latest CV can be downloaded [here](/files/CV_TinghaoXie.pdf).
+
+[![](/images/CV_TinghaoXie-1.png)](/files/CV_TinghaoXie.pdf)
+
+[![](/images/CV_TinghaoXie-2.png)](/files/CV_TinghaoXie.pdf)
