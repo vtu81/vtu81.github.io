@@ -1,0 +1,6 @@
+[submodule "_pages"]
+	path = _pages
+	url = https://github.com/vtu81/vtu.life._pages.git
+[submodule "_posts"]
+	path = _posts
+	url = https://github.com/vtu81/vtu.life._posts.git
