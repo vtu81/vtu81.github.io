@@ -1,9 +1,9 @@
 [submodule "_pages"]
 	path = _pages
-	url = https://github.com/vtu81/vtu.life._pages.git
+	url = https://github.com/vtu-pages/vtu.life._pages.git
 [submodule "_posts"]
 	path = _posts
-	url = https://github.com/vtu81/vtu.life._posts.git
+	url = https://github.com/vtu-pages/vtu.life._posts.git
 [submodule "images"]
 	path = images
 	url = https://github.com/vtu-pages/vtu.life.images.git
