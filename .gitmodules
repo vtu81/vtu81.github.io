@@ -10,3 +10,6 @@
 [submodule "files"]
 	path = files
 	url = https://github.com/vtu-pages/vtu.life.files.git
+[submodule "_publications"]
+	path = _publications
+	url = https://github.com/vtu-pages/vtu.life._publications.git
