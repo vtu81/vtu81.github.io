@@ -13,7 +13,7 @@ function change() {
         tmp >= (num_images - 1) ? tmp = 0 : tmp++;
     }
     index = tmp;
-    imgElement.style.backgroundImage = `url(https://tinghaoxie.com/images/${avatar_images[index]})`;
+    imgElement.style.backgroundImage = `url(/images/${avatar_images[index]})`;
     console.log(imgElement.style.backgroundImage)
     // index >= (num_images - 1) ? index = 0 : index++;
 }
