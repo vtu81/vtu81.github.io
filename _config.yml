@@ -9,7 +9,7 @@
 locale                   : "en-US"
 title                    : "Tinghao"
 title_separator          : "-"
-name                     : &name "Tinghao(Vitus) Xie<br/>谢廷浩"
+name                     : &name "Tinghao Xie<br/>谢廷浩"
 description              : &description "personal description"
 url                      : https://tinghaoxie.com # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 # url                      : http://127.0.0.1:4000 # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
