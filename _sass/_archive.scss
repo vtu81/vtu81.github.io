@@ -91,21 +91,36 @@
    ========================================================================== */
 
 .list__item {
-  @include breakpoint($medium) {
-    padding-right: $right-sidebar-width-narrow;
-  }
+  // @include breakpoint($medium) {
+  //   padding-right: $right-sidebar-width-narrow;
+  // }
 
-  @include breakpoint($large) {
-    padding-right: $right-sidebar-width;
-  }
+  // @include breakpoint($large) {
+  //   padding-right: $right-sidebar-width;
+  // }
 
-  @include breakpoint($x-large) {
-    padding-right: $right-sidebar-width-wide;
-  }
+  // @include breakpoint($x-large) {
+  //   padding-right: $right-sidebar-width-wide;
+  // }
 
-  .page__meta {
-    margin: 0 0 4px;
-  }
+  // .page__meta {
+  //   margin: 0 0 4px;
+  // }
+
+  border-style: groove;
+  border-color: #f15e12;
+  border-width: .4em;
+  margin: 1em;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 1em;
+  padding-right: 1em;
+  transition: $global-transition;
+}
+
+.list__item:hover {
+  border-width: 1em;
+  margin: .4em;
 }
 
 
