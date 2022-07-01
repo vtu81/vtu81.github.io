@@ -1,9 +1,12 @@
 const imgElement = document.getElementById('avatar_div');
 let avatar_images = [
     '0401.jpeg',
-    'selfie_1018.png',
-    '0430.jpg',
-    'vtu-icon-beach.png'
+    // 'selfie_1018.png',
+    // '0430.jpg',
+    'vtu-icon-beach.png',
+    'grad_0.png',
+    'grad_1.png',
+    'grad_2.png',
 ];
 let num_images = avatar_images.length;
 let index = 0;
