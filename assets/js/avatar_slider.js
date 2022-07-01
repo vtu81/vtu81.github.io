@@ -4,9 +4,9 @@ let avatar_images = [
     // 'selfie_1018.png',
     // '0430.jpg',
     'vtu-icon-beach.png',
-    'grad_0.png',
-    'grad_1.png',
-    'grad_2.png',
+    'grad_0.jpg',
+    'grad_1.jpg',
+    'grad_2.jpg',
 ];
 let num_images = avatar_images.length;
 let index = 0;
