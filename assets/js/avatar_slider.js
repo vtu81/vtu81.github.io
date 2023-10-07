@@ -1,18 +1,20 @@
 const imgElement = document.getElementById('avatar_div');
 let avatar_images = [
-    '0401.jpeg',
+    'xie.tinghao.square.png',
+    // '0401.jpeg',
     // 'selfie_1018.png',
     // '0430.jpg',
     // 'vtu-icon-beach.png',
-    // 'grad_0.jpg',
+    'grad_0.jpg',
     // 'grad_1.jpg',
     'grad_2.jpg',
-    'IMG_3396.png',
+    // 'IMG_3396.png',
     'IMG_7818.png',
     'IMG_7826.png',
     'IMG_8036.png',
     'IMG_8667.png',
-    'IMG_8669.png',
+    // 'IMG_8669.png',
+    '2023.0920.square.png',
 ];
 let num_images = avatar_images.length;
 let index = 0;
