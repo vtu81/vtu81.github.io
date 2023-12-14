@@ -1,5 +1,6 @@
 const imgElement = document.getElementById('avatar_div');
 let avatar_images = [
+    'nips23_headshot.jpg',
     'xie.tinghao.square.png',
     // '0401.jpeg',
     // 'selfie_1018.png',
