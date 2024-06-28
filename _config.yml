@@ -83,7 +83,7 @@ analytics:
 # Site Author
 author:
   name             : "Tinghao Xie<br/>谢廷浩"
-  avatar           : "nips23_headshot.jpg"
+  avatar           : "iclr24_headshot.jpg"
   bio              : "Second year ECE PhD candidate at Princeton University."
   location         : "Princeton, NJ, USA"
   github           : "vtu81"
@@ -111,7 +111,7 @@ author:
   stackoverflow    : # http://stackoverflow.com/users/123456/username
   steam            :
   tumblr           :
-  twitter          : #"https://twitter.com/VitusXie"
+  twitter          : "https://twitter.com/VitusXie"
   vine             :
   weibo            :
   xing             :

@@ -14,6 +14,7 @@
     {% endif %} -->
     <div class="image-styled" id="avatar_div"> <!-- Image slider, see `scripts.html` -->
       <img src="{{ author.avatar | prepend: "/images/" | prepend: base_path }}" class="author__avatar" style="opacity: 0">
+      <img src="{{ "nips23_headshot.jpg" | prepend: "/images/" | prepend: base_path }}" class="author__avatar" style="display: none">
       <img src="{{ "xie.tinghao.square.png" | prepend: "/images/" | prepend: base_path }}" class="author__avatar" style="display: none">
       <!-- <img src="{{ "selfie_1018.png" | prepend: "/images/" | prepend: base_path }}" class="author__avatar" style="display: none"> A hidden place holder -->
       <!-- <img src="{{ "0430.jpg" | prepend: "/images/" | prepend: base_path }}" class="author__avatar" style="display: none"> A hidden place holder -->
